@@ -5,7 +5,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
-import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 import logImg from '../../assets/logo.svg';
 
@@ -24,7 +23,6 @@ interface ResetPasswordFormData {
 const ResetPassword: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useAuth();
   const { addToast } = useToast();
 
   const history = useHistory();

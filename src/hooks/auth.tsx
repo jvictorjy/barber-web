@@ -10,11 +10,13 @@ interface AuthContextData {
   user: User;
   signIn(credencials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): void;
 }
 
 interface User {
   id: string;
   name: string;
+  email: string;
   avatar_url: string;
 }
 
@@ -55,6 +57,18 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({ token, user });
   }, []);
 
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@Barber:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
+
   const signOut = useCallback(() => {
     localStorage.removeItem('@Barber:token');
     localStorage.removeItem('@Barber:user');
@@ -63,7 +77,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <Auth.Provider value={{ user: data.user, signIn, signOut }}>
+    <Auth.Provider value={{ user: data.user, signIn, signOut, updateUser }}>
       {children}
     </Auth.Provider>
   );
